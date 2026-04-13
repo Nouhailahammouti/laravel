@@ -1,0 +1,8 @@
+php artisan make:model Product -m
+php artisan make:controller Controllerproudcts
+php artisan make:migration add_is_archived_to_products_table --table=products
+php artisan migrate
+php artisan route:list
+php artisan serve  
+php artisan route:clear
+php artisan migrate:fresh
