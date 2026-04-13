@@ -1,1 +1,1 @@
-# laravel
+# laravel (CRUD/BASIC)
