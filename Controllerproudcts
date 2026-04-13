@@ -51,13 +51,11 @@ public function Archife(creat_table $prouducts) {
     return redirect(route('proudct.index'))->with('success', 'Moved to Archive!');
 }
 
-// 3. دالة لعرض صفحة الأرشيف (اختياري)
 public function showArchive() {
     $archived = creat_table::where('is_archived', true)->get();
     return view('Archife', ['proudacts' => $archived]);
 }
 public function archiveIndex() {
-    // هنا العكس: نجلب فقط من قيمته true (1)
     $archived = creat_table::where('is_archived', true)->get();
     
     return view('Archife', ['proudacts' => $archived]);
