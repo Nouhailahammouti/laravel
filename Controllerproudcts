@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers;
+use App\Models\creat_table;
+
+use Illuminate\Http\Request;
+
+class Controllerproudcts
+{
+    public function index(){
+   $Poudacts=creat_table::all();
+     return view('index',['proudacts'=>$Poudacts]);
+    }
+
+public function creat(){
+
+    return view('creat');
+}
+public function store(Request $request) {
+        $data = $request->validate([
+            'name'  => 'required',
+            'qty'   => 'required|numeric', 
+            'price' => 'required|numeric', 
+            'des'   => 'required',
+        ]);
+
+        $newcreat_table = creat_table::create($data);
+return  redirect('index');
+}
+public function edit(creat_table  $prouducts){
+     return view('edit',['prouducts'=> $prouducts]);
+}
+public function update(creat_table  $prouducts,Request $request){
+        $data = $request->validate([
+            'name'  => 'required',
+            'qty'   => 'required|numeric', 
+            'price' => 'required|numeric', 
+            'des'   => 'required',
+        ]);
+    $prouducts->update($data);
+    return  redirect(route('proudct.index'))->with('Done!');
+   
+}
+public function delet(creat_table  $prouducts){
+       $prouducts->delete();
+       return  redirect(route('proudct.index'))->with('Done!');
+
+}
+public function Archife(creat_table $prouducts) {
+    $prouducts->update(['is_archived' => true]);
+    return redirect(route('proudct.index'))->with('success', 'Moved to Archive!');
+}
+
+// 3. دالة لعرض صفحة الأرشيف (اختياري)
+public function showArchive() {
+    $archived = creat_table::where('is_archived', true)->get();
+    return view('Archife', ['proudacts' => $archived]);
+}
+public function archiveIndex() {
+    // هنا العكس: نجلب فقط من قيمته true (1)
+    $archived = creat_table::where('is_archived', true)->get();
+    
+    return view('Archife', ['proudacts' => $archived]);
+} 
+}
+
