@@ -6,3 +6,5 @@ php artisan route:list
 php artisan serve  
 php artisan route:clear
 php artisan migrate:fresh
+$ php artisan make:migration modify_batrrie_table --table=batrrie (for modification)
+
