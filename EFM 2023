@@ -1,0 +1,85 @@
+1. creat  migration with up and down function:
+php artisan  make : migration creat_utilisation_table 
+
+ public function up(){
+schema::create ('Utilisation',function (blueprint $table)
+{
+$table->id();
+$table-> string('matrucala');
+$table-> string('codesal')->unique();
+$table-> date('debedeutilisation');
+$table-> date('debedefinisation');
+$table->timestamps();
+}
+ };
+
+
+public  funtion down (): void {
+schema :: dropIfExists('Utilisation')
+});
+
+2.
+ php artisan make:model Voiture
+php artisan make:model Salarie
+php artisan make:model Service
+*voitier:
+class voituer extentds model 
+{
+protected  $fillable['matricul','marque','couler','datemisecration']
+}
+
+*salarie
+
+class salarie extentds model 
+{
+protected  $fillable['codesal','nomesal','prenomesal','dateembuche','datenassion','function','codeser']
+}
+
+*servise
+class servise extentds model 
+{
+protected  $fillable['codeser','nomser']
+}
+3/
+php  artisan make: controller VoiterConterooler
+
+
+a.afficherlistvoituer:
+ public  function AfficherListeVoitures{
+$voitures = Voiture::all()
+   return view('voiture.index', compact('voitures'));
+ }
+
+ index.blade
+
+ <div class="container">
+    <h2>Liste des Voitures</h2>
+    
+    <a href="#">Ajouter une nouvelle voiture</a> 
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Matricule</th>
+                <th>Marque</th>
+                <th>Couleur</th>
+                <th>Date Mise en Circulation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($voitures as $voiture)
+                <tr>
+                    <td>{{ $voiture->matricule }}</td>
+                    <td>{{ $voiture->marque }}</td>
+                    <td>{{ $voiture->couleur }}</td>
+                    <td>{{ $voiture->dateMiseEnCirculation }}</td>
+                    <td>
+                        <a href="#">Supprimer</a>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+
