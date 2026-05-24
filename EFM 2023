@@ -26,6 +26,7 @@ php artisan make:model Service
 class voituer extentds model 
 {
 protected  $fillable['matricul','marque','couler','datemisecration']
+
 }
 
 *salarie
@@ -33,13 +34,25 @@ protected  $fillable['matricul','marque','couler','datemisecration']
 class salarie extentds model 
 {
 protected  $fillable['codesal','nomesal','prenomesal','dateembuche','datenassion','function','codeser']
+public function service() {
+        return $this->belongsTo(Service::class, 'codeSer', 'codeSer');
+    }
+
+    // الموظف يمكنه استخدام السيارات عدة مرات
+    public function utilisations() {
+        return $this->hasMany(Utilisation::class, 'codeSal', 'codeSal');
+    }
 }
 
 *servise
 class servise extentds model 
 {
 protected  $fillable['codeser','nomser']
+public function salaries() {
+        return $this->hasMany(Salarie::class, 'codeSer', 'codeSer');
+    }
 }
+
 3/
 php  artisan make: controller VoiterConterooler
 
@@ -55,7 +68,7 @@ $voitures = Voiture::all()
  <div class="container">
     <h2>Liste des Voitures</h2>
     
-    <a href="#">Ajouter une nouvelle voiture</a> 
+    <a href=""{{ route('voitures.create') }}"">Ajouter une nouvelle voiture</a> 
 
     <table border="1">
         <thead>
@@ -75,11 +88,61 @@ $voitures = Voiture::all()
                     <td>{{ $voiture->couleur }}</td>
                     <td>{{ $voiture->dateMiseEnCirculation }}</td>
                     <td>
-                        <a href="#">Supprimer</a>
+                        <a href="{{route('voitier.destroy',$voiter->matrecul)}}">Supprimer</a>
                     </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+
+
+ }
+b. Ajoutelistvoitier
+publuc function AjouterVoiture()(Request $request){
+      $request ->validate ([
+       'matricule'=>'required',
+         'marque'=> 'required',
+        'couler'=> 'required',
+         'dateMiseEnCirculation '=> 'reqierd'|date, 
+)];
+voiture::create ($request->all());
+return redirect()->action([VoitureController::class, 'AfficherListeVoitures']);
+}
+
+c. delete
+
+public function SupremmerVoiter(Request $request){
+   voiture::destroy($request->$matricule)
+return redirect()->action([VoitureController::class, 'AfficherListeVoitures']);
+}
+
+5/
+a.AficherSalarie
+ publuc functon AficherSalarie(){
+ $salaries = Salarie::with('service')->withCount('utilisations')->get();
+ return response()->json($salaries);
+
+b.
+ public function consulterDétails($c){
+
+$utilisations=utilisations::with('voiter')
+->where('codesel'$c)
+->orderby('dateDébutUtilisation', 'desc')
+->get()
+return view(salaries.details', compact('utilisations'));
+ }
+
+6 web.php
+
+use App\Http\Controllers\VoitureController;
+use App\Http\Controllers\SalariéController;
+use Illuminate\Support\Facades\Route;
+Route::get('voitures/supprimer/{matricule}',[VoiterConterooler::class,'SupremmerVoiter'])
+Route::post('/AjouterVoiture',[VoiterConterooler::class,'AjouterVoiture'])
+Route::get('/AficherSalarie',[salarieConterooler::class,'AficherSalarie'])
+Route::get('/salaries/details/{code}',[salarieConterooler::class,'consulterDétails'])
+
+
 
